@@ -7,7 +7,6 @@
 <body>
     <h1>会員登録</h1>
 
-    {{-- 入力エラーがあった場合に赤文字で表示するエリア --}}
     @if ($errors->any())
         <div style="color: red;">
             <ul>
@@ -18,6 +17,7 @@
         </div>
     @endif
 
+    <!-- 送信先URLをブレないように固定しました -->
     <form action="/user/register" method="post">
         @csrf
         名前：<input type="text" name="name" value="{{ old('name') }}"><br><br>

@@ -7,12 +7,15 @@ use Illuminate\Support\Facades\DB;
 
 class CompletedTaskController extends Controller
 {
+    /**
+     * 完了タスク一覧を表示する
+     */
     public function list()
     {
-        
-        $list = DB::table('completed_tasks')->get();
+        // completed_tasks テーブルからデータを全件取得
+        $completedTasks = DB::table('completed_tasks')->get();
 
-        // ビューにデータを渡す
-        return view('task.completed_list', ['list' => $list]);
+        // resources/views/task/completed_list.blade.php を正しく表示
+        return view('task.completed_list', compact('completedTasks'));
     }
 }
