@@ -8,13 +8,11 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// 1. トップページ（登録メッセージがあるかどうかで画面を切り替えます）
+// 1. トップページ
 Route::get('/', function () {
-    // 会員登録コントローラーから「登録されました」というメッセージが届いているか確認
     $message = session('message');
 
     if ($message) {
-        // 登録完了後に戻ってきたときの画面
         return '
             <div style="text-align: center; margin-top: 50px; font-family: sans-serif;">
                 <h1>タスク管理 アプリケーション</h1>
@@ -25,7 +23,6 @@ Route::get('/', function () {
         ';
     }
 
-    // まだ登録していない、最初の状態の画面
     return '
         <div style="text-align: center; margin-top: 50px; font-family: sans-serif;">
             <h1>タスク管理 アプリケーション</h1>
@@ -42,5 +39,13 @@ Route::get('/', function () {
 Route::get('/user/register', 'App\Http\Controllers\UserController@index');
 Route::post('/user/register', 'App\Http\Controllers\UserController@register');
 
-// 3. 完了タスク一覧関連
-Route::get('/completed_tasks/list', 'App\Http\Controllers\CompletedTaskController@list');
+// 3. タスク関連（復旧・追記）
+Route::get('/task/list', 'App\Http\Controllers\TaskController@list')->name('task.list');
+
+// 4. 完了タスク一覧関連
+Route::get('/completed_tasks/list', 'App\Http\Controllers\CompletedTaskController@list')->name('completed_tasks.list');
+
+// 5. ログイン・管理画面関連（復旧・追記）
+Route::get('/login', 'App\Http\Controllers\LoginController@index')->name('login');
+Route::post('/login', 'App\Http\Controllers\LoginController@login');
+Route::get('/admin/dashboard', 'App\Http\Controllers\AdminController@index')->name('admin.dashboard');
