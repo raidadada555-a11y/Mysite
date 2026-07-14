@@ -49,3 +49,5 @@ Route::get('/completed_tasks/list', 'App\Http\Controllers\CompletedTaskControlle
 Route::get('/login', 'App\Http\Controllers\LoginController@index')->name('login');
 Route::post('/login', 'App\Http\Controllers\LoginController@login');
 Route::get('/admin/dashboard', 'App\Http\Controllers\AdminController@index')->name('admin.dashboard');
+
+Route::patch('/task/{id}/complete', 'App\Http\Controllers\TaskController@complete')->name('task.complete');
