@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Http\Requests\UserRegisterPost; 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -17,19 +16,23 @@ class UserController extends Controller
         return view('user.register');
     }
 
+    /**
+     * 会員登録処理を行う
+     */
     public function register(UserRegisterPost $request)
     {
-        
-        $validated = $request->validated();
+        // バリデーション済みのデータを取得
+        $datum = $request->validated();
 
-        // データベースに保存
-        DB::table('users')->insert([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // パスワードのハッシュ化
+        $datum['password'] = Hash::make($datum['password']);
+        
+        // created_at, updated_at を追加
+        $datum['created_at'] = now();
+        $datum['updated_at'] = now();
+
+        // データベース（usersテーブル）に保存
+        DB::table('users')->insert($datum);
 
         return redirect('/')->with('message', '会員登録されました。');
     }
