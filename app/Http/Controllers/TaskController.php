@@ -1,12 +1,14 @@
 <?php
 
 declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\TaskRegisterPostRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Task as TaskModel;
+use App\Models\CompletedTask; // 必須：完了タスクモデルの読み込み
 
 class TaskController extends Controller
 {
@@ -45,7 +47,6 @@ class TaskController extends Controller
         try {
             $r = TaskModel::create($datum);
         } catch(\Throwable $e) {
-            // XXX 本当はログに書く等の処理をする。今回は一端「出力する」だけ
             echo $e->getMessage();
             exit;
         }
@@ -102,6 +103,34 @@ class TaskController extends Controller
         // 詳細閲覧画面にリダイレクトする
         return redirect(route('detail', ['task_id' => $task->id]));
     } 
+
+    /**
+     * タスクの完了処理
+     */
+    public function complete($task_id)
+    {
+        // 1. タスクの取得（getTaskModelを使って本人確認も同時に行う）
+        $task = $this->getTaskModel($task_id);
+        if ($task === null) {
+            return redirect('/task/list');
+        }
+
+        // 2. 完了タスクテーブル(completed_tasks)へ保存
+        // データベースのカラム名に合わせた値を代入
+        CompletedTask::create([
+            'user_id'     => $task->user_id,
+            'name'        => $task->name,
+            'period'      => $task->period,
+            'detail'      => $task->detail,
+            'priority'    => $task->priority,
+        ]);
+
+        // 3. 元のタスクを削除
+        $task->delete();
+
+        // 4. 一覧へリダイレクト
+        return redirect('/task/list')->with('message', 'タスクを完了しました');
+    }
     
     /**
      * 「単一のタスク」Modelの取得

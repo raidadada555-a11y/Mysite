@@ -1,32 +1,29 @@
-@extends('test.layout')
+@extends("admin.layout")
 
-{{-- メインコンテンツ --}}
-@section('contents')
+@section("contents")
     <div class="container mt-4">
+        <h1>管理画面 ログイン</h1>
         
-        {{-- 登録完了メッセージ --}}
-        @if (session('front_message'))
-            <div class="alert alert-success">
-                {{ session('front_message') }}
+        {{-- エラー表示部分 --}}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                @foreach ($errors->all() as $error)
+                    {{ $error }}<br>
+                @endforeach
             </div>
         @endif
 
-        <h1>ログイン</h1>
-        <form action="/test/input" method="post">
+        <form action="/admin/login" method="post">
             @csrf
             <div class="mb-3">
-                <label class="form-label">Email：</label>
-                <input type="text" name="email" class="form-control">
+                <label class="form-label">ログインID：</label>
+                <input type="text" name="login_id" class="form-control" value="{{ old('login_id') }}">
             </div>
             <div class="mb-3">
                 <label class="form-label">パスワード：</label>
                 <input type="password" name="password" class="form-control">
             </div>
-            <button class="btn btn-primary">送信する</button>
+            <button class="btn btn-primary mb-3">ログインする</button>
         </form>
-
-        <div class="mt-3">
-            <a href="/user/register" class="text-decoration-none">会員登録（新規作成）はこちら</a>
-        </div>
     </div>
 @endsection

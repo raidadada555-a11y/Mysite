@@ -1,18 +1,33 @@
-namespace App\Http\Controllers;
+<?php
 
-// 1. 作成したRequestクラスをインポート
-use App\Http\Requests\UserRegisterPost; 
-use Illuminate\Http\Request;
+namespace App\Http\Requests;
 
-class UserController extends Controller
+use Illuminate\Foundation\Http\FormRequest;
+
+class UserRegisterPost extends FormRequest
 {
-    // 2. 引数を Request $request から UserRegisterPost $request に変更
-    public function register(UserRegisterPost $request)
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
     {
-        // ここに到達した時点でバリデーションは完了しています
-        // 検証済みのデータは $request->validated() で取得できます
-        $validated = $request->validated();
+        return true;
+    }
 
-        // 登録処理...
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            // name: 必須、128文字以内
+            'name' => 'required|string|max:128',
+            // email: 必須、emailフォーマット、254文字以内
+            'email' => 'required|email|max:254',
+            // password: 必須、72文字以内
+            'password' => 'required|string|max:72',
+        ];
     }
 }

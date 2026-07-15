@@ -46,6 +46,6 @@ Route::get('/task/list', 'App\Http\Controllers\TaskController@list')->name('task
 Route::get('/completed_tasks/list', 'App\Http\Controllers\CompletedTaskController@list')->name('completed_tasks.list');
 
 // 5. ログイン・管理画面関連（復旧・追記）
-Route::get('/login', 'App\Http\Controllers\LoginController@index')->name('login');
-Route::post('/login', 'App\Http\Controllers\LoginController@login');
+Route::get('/login', 'App\Http\Controllers\Admin\AuthController@index')->name('login');
+Route::post('/login', 'App\Http\Controllers\Admin\AuthController@login');
 Route::get('/admin/dashboard', 'App\Http\Controllers\AdminController@index')->name('admin.dashboard');
