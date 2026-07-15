@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="container mt-4">
-        @yield('content')
+        @yield('contents')
     </div>
 
     <!-- Bootstrap JS -->
