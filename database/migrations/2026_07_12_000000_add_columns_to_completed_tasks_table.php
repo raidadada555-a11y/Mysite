@@ -9,8 +9,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('completed_tasks', function (Blueprint $table) {
-            $table->date('due_date')->nullable();
-            $table->text('description')->nullable();
+            $table->date('period')->nullable();
+            $table->text('detail')->nullable();
             $table->string('priority')->nullable();
         });
     }

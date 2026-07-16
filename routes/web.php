@@ -1,15 +1,10 @@
-<?php
-
-use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
-
 // 1. トップページ
 Route::get('/', function () {
+    // ログイン済みならタスク一覧へリダイレクト
+    if (\Illuminate\Support\Facades\Auth::check()) {
+        return redirect('/task/list');
+    }
+
     $message = session('message');
 
     if ($message) {
@@ -34,18 +29,3 @@ Route::get('/', function () {
         </div>
     ';
 });
-
-// 2. 会員登録関連
-Route::get('/user/register', 'App\Http\Controllers\UserController@index');
-Route::post('/user/register', 'App\Http\Controllers\UserController@register');
-
-// 3. タスク関連（復旧・追記）
-Route::get('/task/list', 'App\Http\Controllers\TaskController@list')->name('task.list');
-
-// 4. 完了タスク一覧関連
-Route::get('/completed_tasks/list', 'App\Http\Controllers\CompletedTaskController@list')->name('completed_tasks.list');
-
-// 5. ログイン・管理画面関連（復旧・追記）
-Route::get('/login', 'App\Http\Controllers\Admin\AuthController@index')->name('login');
-Route::post('/login', 'App\Http\Controllers\Admin\AuthController@login');
-Route::get('/admin/dashboard', 'App\Http\Controllers\AdminController@index')->name('admin.dashboard');

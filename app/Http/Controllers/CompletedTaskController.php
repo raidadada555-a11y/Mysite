@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth; // 追加
+use Illuminate\Support\Facades\Auth;
+use App\Models\CompletedTask; // モデルを使用
 
 class CompletedTaskController extends Controller
 {
@@ -13,12 +13,15 @@ class CompletedTaskController extends Controller
      */
     public function list()
     {
-        // ログイン中のユーザーIDで絞り込んで取得
-        $completedTasks = DB::table('completed_tasks')
-                            ->where('user_id', Auth::id())
-                            ->get();
+        // 1ページあたりの表示件数
+        $per_page = 2;
 
-        // resources/views/task/completed_list.blade.php を表示
+        // モデルを使用して取得（ページネーション適用）
+        $completedTasks = CompletedTask::where('user_id', Auth::id())
+                            ->orderBy('created_at', 'DESC')
+                            ->paginate($per_page);
+
+        // 変数名 $completedTasks でBladeへ渡す
         return view('task.completed_list', compact('completedTasks'));
     }
 }
