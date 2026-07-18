@@ -18,8 +18,11 @@
         <div class="alert-success">
             {{ session('message') }}
         </div>
+        <!-- 修正箇所：登録完了時のみ「タスク一覧へ」のリンクを表示 -->
+        <div>
+            <a href="{{ route('task.list') }}" class="btn">タスク管理画面へ進む</a>
+        </div>
     @else
-        <p>課題の修正がすべて完了しました！</p>
         <div>
             <a href="/user/register" class="btn">👤 新規会員登録はこちら</a>
         </div>

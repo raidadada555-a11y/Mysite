@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRegisterPost; 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth; // ★ここを追加
 
 class UserController extends Controller
 {
@@ -31,8 +32,12 @@ class UserController extends Controller
         $datum['created_at'] = now();
         $datum['updated_at'] = now();
 
-        // データベース（usersテーブル）に保存
-        DB::table('users')->insert($datum);
+        // データベース（usersテーブル）に保存してユーザーIDを取得
+        $userId = DB::table('users')->insertGetId($datum);
+
+        // ★重要：登録したユーザーを自動的にログインさせる
+        $user = \App\Models\User::find($userId);
+        Auth::login($user);
 
         return redirect('/')->with('message', '会員登録されました。');
     }
