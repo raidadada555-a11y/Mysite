@@ -33,19 +33,32 @@
             <th>タスク名</th>
             <th>期限</th>
             <th>重要度</th>
+            <th>詳細</th>
+            <th>編集</th>
+            <th>操作</th>
         </tr>
         @foreach ($list as $task)
         <tr>
             <td>{{ $task->name }}</td>
             <td>{{ $task->period }}</td>
             <td>{{ $task->priority }}</td>
+            <td>
+                <a href="{{ route('detail', ['task_id' => $task->id]) }}">詳細閲覧</a>
+            </td>
+            <td>
+                <a href="{{ route('edit', ['task_id' => $task->id]) }}">編集</a>
+            </td>
+            <td>
+                <form action="{{ route('task.complete', ['task_id' => $task->id]) }}" method="post" style="display:inline;">
+                    @csrf
+                    <button type="submit">完了</button>
+                </form>
+            </td>
         </tr>
         @endforeach
     </table>
     
-    <!-- ページ移動リンク -->
-    <div style="margin-top: 10px;">
-        <!-- ページネーション表示 -->
+    <!-- ページネーション表示 -->
     <div style="margin-top: 10px;">
         <p>現在 {{ $list->currentPage() }} ページ目</p>
         
@@ -58,6 +71,8 @@
                 <span>前に戻る</span>
             @else
                 <a href="{{ $list->previousPageUrl() }}">前に戻る</a>
+            @else
+                <a href="{{ $list->previousPageUrl() }}">前に戻る</a>
             @endif / 
             
             {{-- 次のページへ --}}
@@ -67,7 +82,6 @@
                 <span>次に進む</span>
             @endif
         </div>
-    </div>
     </div>
 
     <hr>
