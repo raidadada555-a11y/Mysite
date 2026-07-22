@@ -3,30 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>タスク管理 アプリケーション</title>
-    <style>
-        body { font-family: sans-serif; text-align: center; margin-top: 50px; }
-        .alert-success { display: inline-block; padding: 15px 30px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 4px; font-weight: bold; margin-bottom: 20px; }
-        .btn { display: inline-block; padding: 10px 20px; background-color: #3498db; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; margin-top: 20px; }
-    </style>
 </head>
 <body>
+    <h1>ログイン</h1>
 
-    <h1>タスク管理 アプリケーション</h1>
-
-    <!-- 登録完了メッセージの表示エリア -->
-    @if (session('message'))
-        <div class="alert-success">
-            {{ session('message') }}
-        </div>
-        <!-- 修正箇所：登録完了時のみ「タスク一覧へ」のリンクを表示 -->
+    @if ($errors->any())
         <div>
-            <a href="{{ route('task.list') }}" class="btn">タスク管理画面へ進む</a>
-        </div>
-    @else
-        <div>
-            <a href="/user/register" class="btn">👤 新規会員登録はこちら</a>
+            @foreach ($errors->all() as $error)
+                {{ $error }}<br>
+            @endforeach
         </div>
     @endif
 
+    @if (session('front.user_register_success') == true)
+        ユーザを登録しました！！<br>
+    @endif
+
+    <form action="/login" method="post">
+        @csrf
+        email：<input name="email" value="{{ old('email') }}"><br>
+        パスワード：<input name="password" type="password"><br>
+        <button>ログインする</button>
+    </form>
+
+    <a href="/user/register">会員登録</a>
 </body>
 </html>

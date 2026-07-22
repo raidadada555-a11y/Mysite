@@ -71,8 +71,6 @@
                 <span>前に戻る</span>
             @else
                 <a href="{{ $list->previousPageUrl() }}">前に戻る</a>
-            @else
-                <a href="{{ $list->previousPageUrl() }}">前に戻る</a>
             @endif / 
             
             {{-- 次のページへ --}}
